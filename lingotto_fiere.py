@@ -18,7 +18,7 @@ class stand:
             self.__prezzo = float(self.__prezzoBase *(1+0.07*int(self.__infoExtra)))
         self.__prezzo = round(self.__prezzo, 2)
 
-    def printPersonalizzata(self):
+    def __str__(self):
         if self.__assigned is None: disp = "Disponibile"
         else: disp = "Non Disponibile"
         if self.__infoExtra is None:
@@ -34,6 +34,9 @@ class stand:
 
     def assign(self, Espositore):
         self.__assigned = Espositore
+
+    def __lt__(self, other):
+        return self.__prezzo < other.__prezzo
 
     @property
     def idS(self):
@@ -55,7 +58,7 @@ class Espositore:
     def rent(self, Stand):
         self.__assignedStand = Stand
 
-    def stampaPersonalizzata(self):
+    def __str__(self):
         if self.__assignedStand is None:
             return f"{self.__idE:^20}|{self.__nome:>10} {self.__cognome:<10}|"
         else:
@@ -125,10 +128,9 @@ class LingottoFiere:
         # TODO --------DONE-----------
         print(f"{"CODICE ESPOSITORE":^20}|{"NOME":>10} {"COGNOME":<10}|{"STEND (SE PRESENTE)":^20}")
         for esp in self.__espositori:
-            print(esp.stampaPersonalizzata())
+            print(esp)
 
     def stand_ordinati_per_prezzo(self):
         """Restituisce la lista ordinata degli stand in base al prezzo"""
         # TODO -------------DONE--------------
-        Lista = sorted([(stand.prezzo(), stand.printPersonalizzata()) for stand in self.__stand], key=itemgetter(0))
-        return [el[1] for el in Lista]
+        return sorted(stand for stand in self.__stand)
