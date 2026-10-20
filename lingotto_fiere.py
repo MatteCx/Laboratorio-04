@@ -110,14 +110,15 @@ class LingottoFiere:
         """Associa uno stand a un espositore"""
         # TODO ----------DONE----------
         stend = [s for s in self.__stand if s.idS == codice_stand]
-        stend = stend[0]
         esp =  [e for e in self.__espositori if e.idE == codice_espositore]
-        esp = esp[0]
-        if stend is None: raise exception(f"Codice Stand non valido")
-        if esp is None: raise exception(f"Codice Esposito non valido")
+        if stend == []: raise Exception(f"Codice Stand non valido")
+        if esp == []: raise Exception(f"Codice Esposito non valido")
 
-        if not stend.available(): raise exception(f"Stend non disponibile")
-        elif not esp.freeToRent(): raise exception(f"Espositore non disponibile")
+        stend = stend[0]
+        esp = esp[0]
+
+        if not stend.available(): raise Exception(f"Stend non disponibile")
+        elif not esp.freeToRent(): raise Exception(f"Espositore non disponibile")
 
         self.__registroAssegnazioni.append((stend, esp))
         esp.rent(stend)
