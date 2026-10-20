@@ -1,6 +1,6 @@
 from csv import reader
 
-class stand:
+class Stand:
     def __init__(self, idS, mq, padiglione, prezzoBase, infoExtra):
         self.__idS = idS
         self.__mq = mq
@@ -30,8 +30,8 @@ class stand:
         if self.__assigned is None: return True
         else: return False
 
-    def assign(self, Espositore):
-        self.__assigned = Espositore
+    def assign(self, espositore):
+        self.__assigned = espositore
 
     def __lt__(self, other):
         return self.__prezzo < other.__prezzo
@@ -53,8 +53,8 @@ class Espositore:
         if self.__assignedStand is None: return True
         else: return False
 
-    def rent(self, Stand):
-        self.__assignedStand = Stand
+    def rent(self, stand):
+        self.__assignedStand = stand
 
     def __str__(self):
         if self.__assignedStand is None:
@@ -94,9 +94,9 @@ class LingottoFiere:
                 for riga in file:
                     if riga[0][0] == "S":
                         if len(riga) == 4:
-                            self.__stand.append(stand(idS=riga[0], mq=float(riga[1]), padiglione=int(riga[2]), prezzoBase=float(riga[3]), infoExtra=None))
+                            self.__stand.append(Stand(idS=riga[0], mq=float(riga[1]), padiglione=int(riga[2]), prezzoBase=float(riga[3]), infoExtra=None))
                         else:
-                            self.__stand.append(stand(idS=riga[0], mq=float(riga[1]), padiglione=int(riga[2]), prezzoBase=float(riga[3]), infoExtra=riga[4]))
+                            self.__stand.append(Stand(idS=riga[0], mq=float(riga[1]), padiglione=int(riga[2]), prezzoBase=float(riga[3]), infoExtra=riga[4]))
                     elif riga[0][0] == "E":
                         self.__espositori.append(Espositore(riga[0], riga[1], riga[2]))
                     else:
@@ -109,8 +109,8 @@ class LingottoFiere:
         # TODO ----------DONE----------
         stend = [s for s in self.__stand if s.idS == codice_stand]
         esp =  [e for e in self.__espositori if e.idE == codice_espositore]
-        if stend == []: raise Exception(f"Codice Stand non valido")
-        if esp == []: raise Exception(f"Codice Esposito non valido")
+        if not stend: raise Exception(f"Codice Stand non valido")
+        if not esp: raise Exception(f"Codice Espositore non valido")
 
         stend = stend[0]
         esp = esp[0]
