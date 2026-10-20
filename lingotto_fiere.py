@@ -1,6 +1,4 @@
 from csv import reader
-from logging import exception
-from operator import itemgetter
 
 class stand:
     def __init__(self, idS, mq, padiglione, prezzoBase, infoExtra):
